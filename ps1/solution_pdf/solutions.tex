@@ -2,6 +2,7 @@
 
 \usepackage[strings]{underscore}
 \usepackage{amsmath}
+\usepackage{graphicx}
 \usepackage{amssymb}
 
 \begin{document}
@@ -43,7 +44,7 @@ this leads to the same decision boundary. We define the boundary for logistic re
 		\end{split}
 \end{align}
 
-Likewise the boudnary for logistic loss can be written as:
+Likewise the boundary for logistic loss can be written as:
 \begin{align}
 		\begin{split}
 				\frac{\frac{1}{1+e^{-\theta^Tx}}}{\frac{1}{1+e^{\theta^Tx}}} &> 1 \rightarrow y=1 \\
@@ -160,7 +161,30 @@ By extension of \textbf{Lemma 1}, semi-definiteness therefore proves convexity.
 
 \subsection*{Part B}
 
+The co-efficient of the fit is [ 0.76037154  1.17194674 -2.6205116 ].
 
+Several interesting caveats were discovered through mistakes. First, initially no parameter for
+y-intercept was learned. This produced pretty good results, but was 5\% worse in accuracy than
+parameters that included a y-intercept (-2.6205116 above). 
+
+Second, a programming mistake in calculating gradient resulted in labels that were suppose to be
+{-1} to be assigned as {1} and vice versa. Interestingly this produced the same boundary. The
+mistake was calculating $g(y^{(k)}\theta^Tx)y_j^{(k)}x_j^{(k)}$ instead of the correct  
+$(1-g(y^{(k)}\theta^Tx))y_j^{(k)}x_j^{(k)}$. At first, I thought this was because I may have 
+assigned the labels to probability wrong, so I simply reversed the mappings to threshold. 
+However, after working through the math a bit more, I realized I did the mapping to label 
+correct, but somehow I was getting 12\% accuracy when I assign $h(\theta^Tx)>0.5 y\rightarrow1$.
+Upon closer inspection, the error was found.
+
+\subsection*{Part C}
+\begin{figure}
+	\centering
+\includegraphics[width=0.75\textwidth]{../p1.png}
+	\caption{ '+' indicate \{1\} labels and '.' indcate \{-1\} labels.}
+	\label{fig:1c}
+\end{figure}
+
+See Figure~\ref{fig:1c}.
 
 
 
