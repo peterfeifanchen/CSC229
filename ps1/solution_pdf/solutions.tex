@@ -10,8 +10,15 @@
 \section*{Question 1}
 \subsection*{Part A}
 
-The logistic loss function for labels \{-1,1\} is the same as the logistic function for labels \{0,1\}. 
-Proof as show in~\cite{logisticloss} is summarized below.
+The logistic loss function for labels \{-1,1\} is the same as the logistic function 
+for labels \{0,1\}. The proof is shown in~\cite{logisticloss} and summarized below.
+
+We start with the given logistic loss equation:
+\begin{equation}
+		P(y | \theta, x) = \frac{1}{1+e^{-y\theta^Tx}}
+		\label{eq:loss}
+\end{equation}
+
 
 Given that the logistic function is:
 \begin{equation}
@@ -24,19 +31,16 @@ It can be shown that given Eq(\ref{eq:logistic}), we can show that:
 		P(-x) = 1 - P(x)
 \label{eq:property2}
 \end{equation}
+
+This means that:
 \begin{equation}
 		P(y=0 | \theta, x) = \frac{e^{-\theta^Tx}}{1+e^{-\theta^Tx}}
 \end{equation}
 
-For the logistical loss function:
-\begin{equation}
-		P(y | \theta, x) = \frac{1}{1+e^{-y\theta^Tx}}
-		\label{eq:loss}
-\end{equation}
-
-The equations are equivalent for $y=1$. For $y=0$, it can be shown that $P(y=0|\theta, x)$ and 
-$P(y=-1|\theta,x)$ are equivalent through Property~\ref{eq:property2}. We could also show that
-this leads to the same decision boundary. We define the boundary for logistic regression as:
+The equations are equivalent for $y=1$. For $y=0$, it can be shown that 
+$P(y=0|\theta, x)$ and $P(y=-1|\theta,x)$ are equivalent through 
+Property~\ref{eq:property2}. We could also show that this leads to the same decision 
+boundary. We define the boundary for logistic regression as:
 \begin{align}
 		\begin{split}
 				\frac{\frac{1}{1+e^{-\theta^Tx}}}{\frac{e^{-\theta^Tx}}{1+e^{-\theta^Tx}}} &> 1 \rightarrow y=1 \\
@@ -52,8 +56,8 @@ Likewise the boundary for logistic loss can be written as:
 		\end{split}
 \end{align}
 
-Given the logistical loss function~\ref{eq:loss}, we would try to maximize the probability of a vector of 
-observed results $y$ with the likelihood function:
+Given the logistical loss function~\ref{eq:loss}, we would try to maximize the 
+probability of a vector of observed results $y$ with the likelihood function:
 \begin{align}
 		\begin{split}
 				L(\theta) &= p(\vec{y}| \theta; X) \\
@@ -62,20 +66,23 @@ observed results $y$ with the likelihood function:
 		\end{split}
 \end{align}
 
-Taking the log likelihood and maximizing:
+Taking the log likelihood and maximizing, we get the likelihood equation as:
 \begin{align}
 		l(\theta) = -\sum_{i=1}^{m}log(1+e^{-y\theta^Tx})
 \end{align}
 
-This is a similar form to the one provided in the question. Maximizing the log likelihood is also minimizing
-the loss function $\sum_{i=1}^{m}log(1+e^{-y\theta^Tx})$, which can be found in ~\cite{logisticloss}.
+This is a similar form to the one provided in the question. Maximizing the log likelihood 
+is also minimizing the loss function $\sum_{i=1}^{m}log(1+e^{-y\theta^Tx})$, which can be 
+found in ~\cite{logisticloss}.
 
-Getting back to the question at hand, to show that the Hessian $H$ is positive semidefinite, we 
-differentiate $J(\theta)$ twice:
+Getting back to the question at hand, to show that the Hessian $H$ is positive 
+semidefinite, we differentiate $J(\theta)$ twice:
 \begin{align}
 		\begin{split}
-	g(z) &= \frac{1}{1+e^{-z}} \\
-		g(y\theta^Tx) &= \frac{1}{1+e^{-y^{(k)}\theta^Tx^{(k)}}}
+			J(\theta) &= -\frac{1}{m}\sum_{i=1}^{m}log(1+e^{-y\theta^Tx}) \\
+			          &= \frac{1}{m}\sum_{i=1}^{m}log(g(y^{(i)}\theta^Tx^{(i)}) \\ 
+	         g(z) &= \frac{1}{1+e^{-z}} \\
+  g(y\theta^Tx) &= \frac{1}{1+e^{-y^{(k)}\theta^Tx^{(k)}}}
 		\end{split}
 \end{align}
 \begin{align}
@@ -88,7 +95,8 @@ differentiate $J(\theta)$ twice:
 		\end{split}
 \end{align}
 
-Note in the last equation, we dropped the index k for clarity. Further since $z^THz$ can be re-expressed as:
+Note in the last equation, we dropped the index k for clarity. Further since $z^THz$ can 
+be re-expressed as:
 \begin{align}
 		\begin{split}
 		z^THz &= \sum_{i}\sum_{j}(x_{ij}z_j)z_i \\
@@ -96,8 +104,9 @@ Note in the last equation, we dropped the index k for clarity. Further since $z^
 		\end{split}
 \end{align}
 
-Note that $\frac{1}{m}\sum^{m}y^2g(y\theta^Tx)(1-g(y\theta^Tx))$ is always greater than zero since $y^2 \geq 0$ and $0 \leq g(y\theta^Tx) \leq 1$. 
-Therefore, we only need to prove that $\sum_{i}\sum_{j}z_ix_ix_jz_j>0$. We can do this by:
+Note that $\frac{1}{m}\sum^{m}y^2g(y\theta^Tx)(1-g(y\theta^Tx))$ is always greater than 
+zero since $y^2 \geq 0$ and $0 \leq g(y\theta^Tx) \leq 1$. Therefore, we only need to 
+prove that $\sum_{i}\sum_{j}z_ix_ix_jz_j>0$. We can do this by:
 \begin{align}
 		\begin{split}
 		\sum_{i}\sum_{j}z_ix_ix_jz_j &= \sum_{i}x_iz_i\sum_{j}x_jz_j \\
@@ -105,35 +114,41 @@ Therefore, we only need to prove that $\sum_{i}\sum_{j}z_ix_ix_jz_j>0$. We can d
 		\end{split}
 \end{align}
 
-But why does proving semi-definite-ness prove convexity? We begin with the definition of convexity.
+But why does proving semi-definite-ness prove convexity? We begin with the definition of 
+convexity.
 
-\textbf{Definition 1.} A function $f: \mathbb{R}^n \rightarrow \mathbb{R}$ is convex if its domain 
-is a convex set and for all $x_1$, $x_2$ in its domain, and all $\lambda \in [0,1]$, we have:
+\textbf{Definition 1.} A function $f: \mathbb{R}^n \rightarrow \mathbb{R}$ is convex if 
+its domain is a convex set and for all $x_1$, $x_2$ in its domain, and all 
+$\lambda \in [0,1]$, we have:
 \begin{align}
 	f(\lambda x_1+(1-\lambda)x_2) \leq \lambda f(x_1) + (1-\lambda)f(x_2)
 \end{align}
 
-This equation says that an equation $f$ is convex in the range $[x_1, x_2]$ if you can draw a line between 
-$f(x_1)$ and $f(x_2)$ such that the function $f$ will always be smaller than that. A more detailed 
-graphical interpretation can be found in~\cite{convexity}.
+This equation says that an equation $f$ is convex in the range $[x_1, x_2]$ if you can 
+draw a line between $f(x_1)$ and $f(x_2)$ such that the function $f$ will always be 
+smaller than that. A more detailed graphical interpretation can be found 
+in~\cite{convexity}.
 
-We first prove \textbf{Lemma 1:} $f(x_2) \geq f(x_1) + \nabla f(x_1)^T(x_2-x_1)$, then $f$ is 
+We first prove a lemma.
+
+\textbf{Lemma 1:} $f(x_1) \geq f(x_2) + \nabla f(x_2)^T(x_1-x_2)$, then $f$ is 
 convex~\cite{characterConvexity}. 
-We let $z=\lambda x_2 + (1-\lambda)x_1$. 
+
+We let $z=\lambda x_1 + (1-\lambda)x_2$. 
 \begin{align}
 	\begin{split}
-		f(z)-f(x_1) \leq \lambda f(x_2) + (1-\lambda)f(x_1) - f(x_1) = \lambda f(x_2) - \lambda f(x_1)
+		f(z)-f(x_2) \leq \lambda f(x_1) + (1-\lambda)f(x_2) - f(x_2) = \lambda f(x_1) - \lambda f(x_2)
 	\end{split}
 \end{align}
 
-We know that the gradient $\nabla f(x_1)^T(x_2-x_1)$ can be re-expressed as
-\footnote{Here $\nabla f(x_1)^T(x_2-x_1)$ is a first-order directional derivative with expansion 
-shown in along with why first/second-order expansion over can be substituted by $z \in [x_1,x_2]$
-~\cite{directionalDerivative}}:
+We know that the gradient $\nabla f(x_2)^T(x_1-x_2)$ can be re-expressed as
+\footnote{Here $\nabla f(x_2)^T(x_1-x_2)$ is a first-order directional derivative
+with expansion shown in~\cite{directionDerivative}. It also shows why first/second-order 
+expansion can be substituted by $z \in [x_1,x_2]$}
 
 \begin{align}
 	\begin{split}
-		\nabla f(x_1)^T(x_2-x_1) &= \lim_{\lambda \rightarrow 0^+}\frac{f(x_1+\lambda(x_2-x_1))-f(x)}{\lambda} \\
+		\nabla f(x_2)^T(x_1-x_2) &= \lim_{\lambda \rightarrow 0^+}\frac{f(x_2+\lambda(x_1-x_2))-f(x)}{\lambda} \\
 		&= \lim_{\lambda \rightarrow 0^+}\frac{f(z)-f(x)}{\lambda} \leq f(x_2) - f(x_1)
 	\end{split}
 \end{align}
@@ -144,9 +159,9 @@ This implies that:
 	f(x_1) \geq f(z) + \nabla f(z)^T(x_1-z) \\
 \end{align}
 
-Which if we multiply the first equation by $\lambda$ and second by $(1-\lambda)$ and sum both equations, 
-given that we had let $z=\lambda x_2 + (1-\lambda)x_1$,  we would arrive at the definition of convexity in
-\textbf{Definition 1}.
+Which if we multiply the first equation by $\lambda$ and second by $(1-\lambda)$ and sum 
+both equations, given that we had let $z=\lambda x_1 + (1-\lambda)x_2$,  we would arrive 
+at the definition of convexity in \textbf{Definition 1}.
 
 Using \textbf{Lemma 1}, we can take the taylor expansion of $f(x_2)$:
 \begin{align}
@@ -161,20 +176,21 @@ By extension of \textbf{Lemma 1}, semi-definiteness therefore proves convexity.
 
 \subsection*{Part B}
 
-The co-efficient of the fit is [ 0.76037154  1.17194674 -2.6205116 ].
+The co-efficients of the fit are [ 0.76037154  1.17194674 -2.6205116 ].
 
-Several interesting caveats were discovered through mistakes. First, initially no parameter for
-y-intercept was learned. This produced pretty good results, but was 5\% worse in accuracy than
-parameters that included a y-intercept (-2.6205116 above). 
+Several interesting caveats were discovered through mistakes. First, initially no 
+parameter for y-intercept was learned. This produced pretty good results, but was 
+5\% worse in accuracy than parameters that included a y-intercept (-2.6205116 above). 
 
-Second, a programming mistake in calculating gradient resulted in labels that were suppose to be
-{-1} to be assigned as {1} and vice versa. Interestingly this produced the same boundary. The
-mistake was calculating $g(y^{(k)}\theta^Tx)y_j^{(k)}x_j^{(k)}$ instead of the correct  
-$(1-g(y^{(k)}\theta^Tx))y_j^{(k)}x_j^{(k)}$. At first, I thought this was because I may have 
-assigned the labels to probability wrong, so I simply reversed the mappings to threshold. 
-However, after working through the math a bit more, I realized I did the mapping to label 
-correct, but somehow I was getting 12\% accuracy when I assign $h(\theta^Tx)>0.5 y\rightarrow1$.
-Upon closer inspection, the error was found.
+Second, a programming mistake in calculating gradient 
+$\frac{\partial J'(\theta)}{\partial \theta_j}$ resulted in labels that were suppose to 
+be {-1} to be assigned as {1} and vice versa. Interestingly this produced the same 
+boundary. The mistake was calculating $g(y^{(k)}\theta^Tx)y_j^{(k)}x_j^{(k)}$ instead of 
+the correct $(1-g(y^{(k)}\theta^Tx))y_j^{(k)}x_j^{(k)}$. At first, I thought this was 
+because I may have assigned the labels to probability wrong, so I simply reversed the
+mappings to threshold. However, after working through the math a bit more, I realized 
+I did the mapping to label correct, but somehow I was getting 12\% accuracy when I assign 
+$h(\theta^Tx)>0.5 y\rightarrow1$. Upon closer inspection, the error was found.
 
 \subsection*{Part C}
 \begin{figure}
@@ -186,7 +202,232 @@ Upon closer inspection, the error was found.
 
 See Figure~\ref{fig:1c}.
 
+\section*{Question 2}
+\subsection*{Part A}
+\begin{align}
+	\begin{split}
+	p(y; \lambda) &= \frac{e^{-\lambda}\lambda^y}{y!} \\
+	              &= \frac{1}{y!}e^{ylog\lambda-\lambda} \\
+	 \\
+	 T(y) &= y \\
+	 \eta &= log\lambda \\
+	 a(\eta) &= \lambda \\
+	 b(y) &= \frac{1}{y!}
+	\end{split}
+\end{align}
 
+\subsection*{Part B}
+\begin{align}
+	\begin{split}
+		g(\eta) &= E[T(y);\eta] = E[y;\eta] \\
+		E[y;\lambda] &= \lambda \textnormal{ and } \eta = log\lambda \implies g(\eta) = E[y;e^\eta]=e^\eta
+	\end{split}
+\end{align}
+
+\subsection*{Part C}
+Note: $y^{i}$ and $x^{i}$ are reduced to $y$ and $x$ for simplicity and $\eta = \theta^{T}x 
+\implies \lambda = e^{\theta^Tx}$.
+\begin{align}
+	\begin{split}
+		L(\theta) &= \sum_{i}^{m}logp(y|x;\theta) \\
+							&= \sum_{i}^{m}log\frac{e^{-e^{\theta^Tx}}(e^{\theta^Tx)y}}{y!} \\
+							&= \sum_{i}^{m}-e^{\theta^Tx} + y\theta^Tx - logy! \\
+		\frac{\partial L(\theta)}{\partial \theta_j} &= \sum_{i}^{m}-x_je^{\theta^Tx} + yx_j \\
+																								 &= \sum_{i}^{m}x_j(y-e^{\theta^Tx}) \\
+	\end{split}
+\end{align}
+
+$\theta_j = \theta_j + \alpha \nabla_{\theta}l(\theta) = \theta_j + \alpha(y-e^{\theta^Tx})x_j$.
+
+\subsection*{Part D}
+\begin{align}
+	\begin{split}
+		l(\theta) &= logb(y) + \eta y - a(\eta) \textnormal{ with } \eta = \theta^Tx \\
+		\frac{\partial l(\theta)}{\partial \theta_j} &= x_j(y - \frac{\partial a(\theta^Tx)}{\partial (\theta^Tx)}) \\
+	\end{split}
+\end{align}
+
+Since $\theta_j = \theta_j + \alpha \nabla_{\theta}l(\theta) = \theta_j - \alpha(\frac{\partial 
+a(\theta^Tx)}{\partial (\theta^Tx)} - y)x_j$. We only need to show that $h(x)$, the canonical 
+response function (or plain english the function we use to predict), is $\frac{\partial
+a(\theta^Tx)}{\partial (\theta^Tx)}$.  
+
+\begin{align}
+	\begin{split}
+			        \int_{y}p(y|x;\theta)dy &= 1 \\
+    \int_{y}b(y)e^{\eta^Ty-a(\eta)}dy &= 1 \\
+						\int_{y}b(y)e^{\eta^Ty}dy &= e^{a(\eta)} \\
+		\frac{\partial}{\partial \eta} \int_{y}b(y)e^{\eta^Ty}dy &= \frac{\partial}{\partial \eta}e^{a(\eta)} \\
+		\int_{y}yb(y)e^{\eta^Ty}dy &= e^{a(\eta)}\frac{\partial a(\eta)}{\partial \eta} \\
+		\int_{y}ye^{\eta^Ty-a(\eta)}dy &= \frac{\partial a(\eta)}{\partial \eta} \\
+		\int_{y}yp(y|x;\theta)dy &= \frac{\partial a(\eta)}{\partial \eta} \\
+		E[y|x;\theta] &= \frac{\partial a(\eta)}{\partial \eta} = h(x)
+  \end{split}
+\end{align}
+
+
+\section*{Question 3}
+\subsection*{Part A}
+\begin{align}
+	\begin{split}
+		p(y|x; \phi, \Sigma, \mu_{-1}, \mu_{1}) &= \frac{p(x|y)p(y)}{\sum p(x|y)p(y)} \\
+	\end{split}
+\end{align}
+
+\begin{align}
+	\begin{split}
+    p(y=1|x) &= \frac{\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}e^{-\frac{1}{2}(x-\mu_{1})^T\Sigma^{1}(x-\mu_{1})}\phi}
+                     {\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}e^{-\frac{1}{2}(x-\mu_{1})^T\Sigma^{1}(x-\mu_{1})}\phi +
+											\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}e^{-\frac{1}{2}(x-\mu_{-1})^T\Sigma^{-1}(x-\mu_{-1})}(1-\phi)} \\ 
+		p(y=1|x) &= \frac{e^{-\frac{1}{2}(x-\mu_{1})^T\Sigma^{1}(x-\mu_{1})}\phi}
+                     {e^{-\frac{1}{2}(x-\mu_{1})^T\Sigma^{1}(x-\mu_{1})}\phi +
+											e^{-\frac{1}{2}(x-\mu_{-1})^T\Sigma^{-1}(x-\mu_{-1})}(1-\phi)} \\
+		p(y=1|x) &= \frac{1}{1 + e^{ x^T\Sigma^{-1}(\mu_{-1}-\mu_{1}) - 
+								\frac{1}{2}(\mu_{-1}^T\Sigma^{-1}\mu_{-1} + \mu_{1}^T\Sigma^{-1}\mu_{1}) + 
+								log\frac{1-\phi}{\phi}}} \\
+	\end{split}
+\end{align}
+
+\begin{align}
+	\begin{split}
+		p(y=-1|x) &= \frac{\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}e^{-\frac{1}{2}(x-\mu_{-1})^T\Sigma^{1}(x-\mu_{-1})}(1-\phi)}
+                     {\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}e^{-\frac{1}{2}(x-\mu_{1})^T\Sigma^{1}(x-\mu_{1})}\phi +
+											\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}}e^{-\frac{1}{2}(x-\mu_{-1})^T\Sigma^{-1}(x-\mu_{-1})}(1-\phi)} \\
+		p(y=-1|x) &= \frac{e^{-\frac{1}{2}(x-\mu_{-1})^T\Sigma^{-1}(x-\mu_{-1})}(1-\phi)}
+                     {e^{-\frac{1}{2}(x-\mu_{1})^T\Sigma^{-1}(x-\mu_{1})}\phi +
+											e^{-\frac{1}{2}(x-\mu_{-1})^T\Sigma^{-1}(x-\mu_{-1})}(1-\phi)} \\
+		p(y=-1|x) &= \frac{1}{1 + e^{ x^T\Sigma^{-1}(\mu_{1}-\mu_{-1}) - 
+								\frac{1}{2}(\mu_{1}^T\Sigma^{-1}\mu_{1} + \mu_{-1}^T\Sigma^{-1}\mu_{-1}) + 
+								log\frac{\phi}{1-\phi}}}
+	\end{split}
+\end{align}
+
+If we let $\theta=\Sigma^{-1}(\mu_1-\mu_{-1})$ and 
+$\theta_0=log(\frac{\phi}{1-\phi})+\frac{1}{2}(\mu^T_{-1}\Sigma^{-1}\mu_{-1}-
+\mu_1^T\Sigma^{-1}\mu_1)$, then:
+
+\begin{align}
+	\begin{split}
+		p(y=1|x) &= \frac{1}{1+e^{-(\theta^Tx + \theta_0})} \\
+		p(y=-1|x) &= \frac{1}{1+e^{\theta^Tx + \theta_0}}
+	\end{split}
+\end{align}
+
+More succinctly, this can be written as $p(y|x)=\frac{1}{1+e^{-y(\theta^Tx + \theta_0)}}$.
+
+\subsection*{Part B}
+See Part C.
+\subsection*{Part C}
+
+\begin{align}
+	\begin{split}
+		\frac{\partial l(\phi, \mu_{-1}, \mu_{1}, \Sigma)}{\partial \phi} =& \sum_{i} 
+				1\{y=1\}log\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}} + \\ 
+				&1\{y=-1\}log\frac{1}{(2\pi)^{n/2}|\Sigma|^{1/2}} + \\ 
+				&1\{y=1\}(-\frac{1}{2}(x-\mu_1)^T\Sigma^{-1}(x-\mu_1)) + \\ 
+				&1\{y=-1\}(-\frac{1}{2}(x-\mu_{-1})^T\Sigma^{-1}(x-\mu_{-1})) + \\ 
+				&1\{y=1\}log\phi + 1\{y=-1\}log(1-\phi)
+  \end{split}
+\end{align}
+
+For $\phi$:
+
+\begin{align}
+	\begin{split}
+		\frac{\partial l(\phi, \mu_{-1}, \mu_{1}, \Sigma)}{\partial \phi} &= 
+        \sum_{i}1\{y=1\}\frac{1}{\phi} - 1\{y=-1\}\frac{1}{1-\phi} \\ 
+		(1-\phi)\sum_{i}1\{y=1\} &= \phi \sum_{i}1\{y=-1\} \\
+        \phi &= \frac{1}{m} \sum_{i}1\{y=1\}
+  \end{split}
+\end{align}
+
+For $\mu_{-1}$, $\mu_1$, and $\Sigma$, we use the following matrix gradient equations found in
+the notes:
+
+\begin{align}
+	\nabla_{A}trAB &= B^T \\
+  \nabla_{A^T}f(A) &= (\nabla_{A}f(A))^T \\
+  \nabla_{A}trABA^TC &= CAB + C^TAB^T \\
+  \nabla_{A}|A| &= |A|(A^{-1})^T
+\end{align}
+
+For $\mu_1$:
+\begin{align}
+	\begin{split}
+		\frac{\partial l(\mu_1, \mu_{-1}, \mu_{1}, \Sigma)}{\partial \mu_1} &= 
+       \sum_{i}1\{y=1\}*(-\frac{1}{2})\frac{\partial}{\partial \mu_1}tr(x-\mu_1)^T\Sigma^{-1}(x-\mu_1) \\
+			 &= \sum_{i}1\{y=1\}*(-\frac{1}{2})((x-\mu_1)^T\Sigma^{-1} + (x-\mu_1)^T\Sigma^{-T})\frac{\partial}{\partial \mu_1}(x-\mu_1)^T \\
+			 &= \sum_{i}1\{y=1\}(x-\mu_1)^T\Sigma^{-1} \\
+		\sum_{i}1\{y=1\}x &= \sum_{i}1\{y=1\}\mu_1 \\
+		\mu_1 &= \frac{\sum_{i}1\{y=1\}x}{\sum_{i}1\{y=1\}}
+	\end{split}
+\end{align}
+
+For $\mu_{-1}$:
+\begin{align}
+	\begin{split}
+		\frac{\partial l(\mu_1, \mu_{-1}, \mu_{1}, \Sigma)}{\partial \mu_{-1}} &= 
+			 \sum_{i}1\{y=-1\}*(-\frac{1}{2})\frac{\partial}{\partial \mu_{-1}}tr(x-\mu_{-1})^T\Sigma^{-1}(x-\mu_{-1}) \\
+			 &= \sum_{i}1\{y=-1\}*(-\frac{1}{2})((x-\mu_{-1})^T\Sigma^{-1} + (x-\mu_{-1})^T\Sigma^{-T})\frac{\partial}{\partial \mu_{-1}}(x-\mu_{-1})^T \\
+			 &= \sum_{i}1\{y=-1\}(x-\mu_{-1})^T\Sigma^{-1} \\
+		\sum_{i}1\{y=-1\}x &= \sum_{i}1\{y=-1\}\mu_{-1} \\
+		\mu_{-1} &= \frac{\sum_{i}1\{y=-1\}x}{\sum_{i}1\{y=-1\}}
+	\end{split}
+\end{align}
+
+For $\Sigma$:
+\begin{align}
+	\begin{split}
+		\frac{\partial l(\mu_1, \mu_{-1}, \mu_{1}, \Sigma)}{\partial \Sigma^{-1}} =& -\frac{1}{2}\sum_{i} 
+		1\{y=1\}\Sigma + 1\{y=-1\}\Sigma + \\
+		&1\{y=1\}(x-\mu_1)(x-\mu_1)^T + 1\{y=-1\}(x-\mu_{-1})(x-\mu_{-1})^T \\
+		m\Sigma =& \sum_{i}(x-\mu_1)(x-\mu_1)^T + (x-\mu_{-1})(x-\mu_{-1})^T \\
+		\Sigma =& \frac{1}{m}\sum_{i}(x-\mu_y)(x-\mu_y)^T 
+	\end{split}
+\end{align}
+
+For $\Sigma$ above, we needed to use several interesting properties:
+\begin{enumerate}
+	\item determinant of matrix inverse is inverse of the matrix determinant $|\Sigma|= \frac{1}{\Sigma^{-1}}$
+	\item trace of matrix cyclically permutate $tr(ABC)=tr(BCA)=tr(CAB)$
+	\item matrix $\Sigma$ is symmetric
+\end{enumerate}
+
+\section*{Question 4}
+\subsection*{Part A}
+Newton's method is defined as $x^{i+1}=x^{i}-\frac{f'(x)}{f''(x)}$.
+For $g(z)$:
+\begin{align}
+	\begin{split}
+		z^{i+1} &= z^{i}-\frac{g'(z)}{g''(z)} \\
+		g'(z) &= f'(Az)\frac{\partial (Az)}{\partial z}=Af'(Az) \\
+	  g''(z) &= f''(Az) = A^2f''(Az) = A^2g(z) \\
+		z^{i+1} &= z^{i} - \frac{Af'(Az)}{A^2f''(Az)} \\
+	\end{split}
+\end{align}
+
+We assume $z^{i}=A^{-1}x^{i}$ and know that the base case $z^{0}$ is true. We only need to prove
+that $z^{i+1}=A^{-1}x^{i+1}$. Since $\frac{f'(x)}{f''(x)}=x^{i}-x^{i+1}$:
+\begin{align}
+	\begin{split}
+		z^{i+1} &= z^{i} - (x^{i}-x^{i+1})A^{-1} \\
+		        &= A^{-1}x^{i+1}
+	\end{split}
+\end{align}
+
+Therefore Newton's method is invariant to linear re-parameterization. 
+
+\subsection*{Part B}
+Gradient descent is defined as $x^{i+1}=x^{i}-\alpha f'(x^{i})$. Since $x^{i}=Az^{i}$ and 
+$f'(x^{i})=\frac{x^{i}-x^{i+1}}{\alpha}$:
+\begin{align}
+	\begin{split}
+		z^{i+1} &= z^{i}-\alpha Af'(Az^{i}) \\
+		z^{i+1} &= A^{-1}x^{i} - Ax^{i} + Ax^{i+1}
+	\end{split}
+\end{align}
+
+Gradient descent is not invariant to linear re-parameterization.
 
 \bibliographystyle{abbrv}
 \bibliography{solutions}
