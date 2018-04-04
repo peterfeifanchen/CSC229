@@ -6,3 +6,4 @@
 *.aux
 *.pdf
 *.pyc
+*DS_Store
