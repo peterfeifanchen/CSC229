@@ -45,8 +45,11 @@ def add_intercept(X_):
     return np.column_stack( (X_, np.array( [1]*450 )) )
 
 def smooth_data(Y, X_, tau):
+    sample = 0
     ysmooth = np.zeros(Y.shape)
     for i in xrange(0, Y.shape[0]):
+        sample = sample + 1
+        print( 'sample {}'.format(sample) )
         ysmooth[i,:] = LWR_smooth( Y[i], X_, tau )
     return ysmooth
 
@@ -200,9 +203,9 @@ def main():
     print('Part c.iii) Test error: %.4f' % np.mean(test_errors))
 
     left_1 = func_reg(left_train, right_train, right_test[0])
-    plot_c(left_1, smooth_test[0], wavelengths, 'p5c3_1.png')
+    plot_c(left_1, smooth_test[0], wavelengths, 'p5c3-1.png')
     left_6 = func_reg(left_train, right_train, right_test[5])
-    plot_c(left_6, smooth_test[5], wavelengths, 'p5c3_6.png')
+    plot_c(left_6, smooth_test[5], wavelengths, 'p5c3-6.png')
     pass
 
 if __name__ == '__main__':

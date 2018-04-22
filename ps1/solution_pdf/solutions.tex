@@ -143,7 +143,7 @@ We let $z=\lambda x_1 + (1-\lambda)x_2$.
 
 We know that the gradient $\nabla f(x_2)^T(x_1-x_2)$ can be re-expressed as
 \footnote{Here $\nabla f(x_2)^T(x_1-x_2)$ is a first-order directional derivative
-with expansion shown in~\cite{directionDerivative}. It also shows why first/second-order 
+with expansion shown in~\cite{directionalDerivative}. It also shows why first/second-order 
 expansion can be substituted by $z \in [x_1,x_2]$}
 
 \begin{align}
@@ -428,6 +428,116 @@ $f'(x^{i})=\frac{x^{i}-x^{i+1}}{\alpha}$:
 \end{align}
 
 Gradient descent is not invariant to linear re-parameterization.
+
+\section*{Question 5}
+\subsection*{Part A}
+\subsubsection*{$i)$ }
+\begin{align}
+	\begin{split}
+		J(\theta) &= (X\theta-y)^TW(X\theta-y) \\
+							&= (\begin{bmatrix} X^{0} \\ X^{1} \\ \vdots \\ X^{i} \end{bmatrix}
+								\begin{bmatrix} \theta_0 \\ \theta_1 \\ \vdots \\ \theta_n \end{bmatrix} -
+									\begin{bmatrix} y^{0} \\ y^{1} \\ \vdots \\ y{i} \end{bmatrix})^T
+								 (\begin{bmatrix} \frac{1}{2}w^{0} \\ & \frac{1}{2}w^{1} \\ & & \ddots \\ & & & \frac{1}{2}w^{i} \end{bmatrix})
+								 (\begin{bmatrix} X^{0} \\ X^{1} \\ \vdots \\ X^{i} \end{bmatrix}
+								  \begin{bmatrix} \theta_0 \\ \theta_1 \\ \vdots \\ \theta_n \end{bmatrix} -
+									\begin{bmatrix} y^{0} \\ y^{1} \\ \vdots \\ y{i} \end{bmatrix}) \\
+							&= \frac{1}{2} \begin{bmatrix} \theta^{T}x^{0} & \theta^{T}x^{1} & \cdots & \theta^{T}x^{i} \end{bmatrix} 
+								 \begin{bmatrix} w^{0}(\theta^Tx^{0}-y^{0}) \\ w^{1}(\theta^Tx^{1}-y^{1}) \\ \vdots \\ w^{i}(\theta^Tx^{i}-y^{i}) \end{bmatrix} \\
+							&= \frac{1}{2} \sum_i (\theta^Tx^{i}-y^{i})w^{i}(\theta^Tx^{i}-y^{i}) \\
+							&= \frac{1}{2} \sum_i w^{i}(\theta^Tx^{i}-y^{i})^2
+		\end{split}
+\end{align}
+\subsubsection*{$ii)$ }
+\begin{align}
+	\begin{split}
+		\nabla_\theta J(\theta) &= \frac{1}{2} \nabla_\theta (X\theta-y)^TW(X\theta-y) \\
+													  &= \frac{1}{2} \nabla_\theta \theta^TX^TWX\theta - \theta^TX^TWy - y^TWX\theta + y^TWy \\
+														&= \frac{1}{2} ( (\theta^TX^TWX)^T + \theta^TX^TW^TX- (X^TWy) - y^TWX ) \\
+		\end{split}
+\end{align}
+
+We set $\nabla_\theta J(\theta)=0$, and since $W$ is a diagonal matrix $W^T = W$:
+
+\begin{align}
+	\begin{split}
+		2X^TWX\theta &= 2X^TWy \\
+					\theta &= (X^TWX)^{-1}X^TW^Ty 
+		\end{split}
+\end{align}
+
+\subsubsection*{$iii)$ }
+
+\begin{align}
+	\begin{split}
+		l(\theta) &= log \prod_i \frac{1}{\sqrt{2\pi}\sigma^{i}}e^{-\frac{(y^{i}-\theta^Tx^{i})^2}{2(\sigma^{i})^2}} \\
+							&= - \sum_i log \sqrt{2\pi}\sigma^{i} - \frac{(y^{i}-\theta^Tx^{i})^2}{2(\sigma^{i})^2} \\
+		\frac{\partial l'(\theta)}{\partial \theta} &= \frac{\partial l'(\theta)}{\partial \theta} \frac{1}{2} \sum_i \frac{1}{\sigma^{(i)2}}(\theta^Tx^{i} - y^{i})^2  	
+	\end{split}
+\end{align}
+
+In this case, the problem of normal distributed samples with differing variances reduce to a 
+weighted linear regression problem where $w^{i}=\frac{1}{(\sigma^{i})^2}$.
+
+
+\subsection*{Part B}
+\subsubsection*{$i)$}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\textwidth]{../p5b1.png}
+	\caption{ Linear Regression of first training sample of quasar data. $y=\theta^Tx$ where $\theta=(X^TX)^{-1}X^Ty$}
+	\label{fig:5b1}
+\end{figure}
+
+See Figure~\ref{fig:5b1}.
+
+\subsubsection*{$ii)$}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\textwidth]{../p5b2.png}
+	\caption{ Weighted Linear Regression of first training sample of quasar data. $y=\theta^T(x)x$ where $\theta=(X^TWX)^{-1}X^TW^Ty$}
+	\label{fig:5b2}
+\end{figure}
+
+See Figure~\ref{fig:5b2}.
+
+\subsubsection*{$iii)$}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\textwidth]{../p5b3.png}
+	\caption{ Weighted Linear Regression of first training sample of quasar data. $y=\theta^T(x)x$ where $\theta=(X^TWX)^{-1}X^TW^Ty$. $\tau = 1,10,100,1000$ . }
+	\label{fig:5b3}
+\end{figure}
+
+See Figure~\ref{fig:5b3}. The higher the value $\tau$, the closer the estimated curve $y=h(x)$ tracks
+the data points. 
+
+\subsection*{Part C}
+\subsubsection*{$i)$}
+
+See Q5.py.
+
+\subsubsection*{$ii)$}
+
+See Q5.py. Training set error 1.0664.
+
+\subsubsection*{$iii)$}
+
+See Q5.py and Figure~\ref{fig:5c3-1} and~\ref{fig:5c3-6}. Test set error 2.7100.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\textwidth]{../p5c3-1.png}
+	\caption{ Weighted Linear Regression of test sample 1 of quasar data. }
+	\label{fig:5c3-1}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.75\textwidth]{../p5c3-6.png}
+	\caption{ Weighted Linear Regression of test sample 1 of quasar data. }
+	\label{fig:5c3-6}
+\end{figure}
 
 \bibliographystyle{abbrv}
 \bibliography{solutions}
