@@ -4,6 +4,5 @@
 *.out
 *.log
 *.aux
-*.pdf
 *.pyc
 *DS_Store
